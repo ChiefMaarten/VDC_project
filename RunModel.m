@@ -25,9 +25,9 @@ par.Cl = 3.7;
 par.Cd = 1.0;
 par.V = 80;
 
-par.floorlength = 2;
-par.ainlet = 0.03;
-par.floorwidth = 0.5;
+par.floorlength = 2.4;
+par.ainlet = 0.11;
+par.floorwidth = 0.4;
 par.pstatic = 101325;
 
 % simulation lon vel
@@ -49,9 +49,9 @@ C = [par.K_t 0 0 0;...                                   % tire force
 Dw = [-par.K_t; 0; 0];
 Du = [0; 0; -1];                                     % feedthrough matrix
 % Weights selection for use in performance index
-r1 = 0;      % comfort weight
-r2 = 5e+3;      % road holding weight
-r3 = 5e+3;         % control effort weight
+r1 = 5e8;      % comfort weight
+r2 = 0;      % road holding weight
+r3 = 0;         % control effort weight
 Rxx = A(4,:)'*A(4,:) + diag([r1 0 r2 0]);
 Rxu = -A(4,:)';
 Ruu = 1 + r3;
