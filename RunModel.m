@@ -14,7 +14,7 @@ par.C_s = D*c_crit;
 par.C_t = 450;
 
 par.wn_s = sqrt(par.K_s*par.K_t / (par.K_s + par.K_t)/par.m_s);              % sprung mass natural frequency
-par.d_s = 0.3 * (2 * par.m_s * par.wn_s);                        % damping ratio
+par.d_s = D * (2 * par.m_s * par.wn_s);                        % damping ratio
 
 % downforce
 par.initial_downforce = 1000;
