@@ -1,5 +1,5 @@
 %% Parameter script
-par.use_LQR = 1;
+par.use_LQR = 0;
 
 par.m_s = 207;
 par.m_u = 20;
@@ -51,7 +51,7 @@ C = [par.K_t 0 0 0;...                                   % tire force
 Dw = [-par.K_t; 0; 0];
 Du = [0; 0; -1];                                     % feedthrough matrix
 % Weights selection for use in performance index
-r1 = 5e10;      % comfort weight
+r1 = 5e8;      % comfort weight
 r2 = 0;      % road holding weight
 r3 = 0;         % control effort weight
 Rxx = A(4,:)'*A(4,:) + diag([r1 0 r2 0]);
@@ -69,8 +69,8 @@ sim QCM_2020
 %% Calculate metrics
 % Road holding (mechanical grip): rms of unsprung acc, rms of downforce
 comfort_metric = rms(out.ddZ_s.Data);
-mech_grip_metric = rms(out.ddZ_u.Data);
-aero_grip_metric = rms(out.lower_downforce.Data);
+mech_grip_metric = rms(out.
+aero_grip_metric = 
 
 
 %% Plot interesting graphs
