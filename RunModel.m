@@ -49,14 +49,14 @@ C = [par.K_t 0 0 0;...                                   % tire force
 Dw = [-par.K_t; 0; 0];
 Du = [0; 0; -1];                                     % feedthrough matrix
 % Weights selection for use in performance index
-r1 = 4e+4;      % comfort weight
+r1 = 0;      % comfort weight
 r2 = 5e+3;      % road holding weight
-r3 = 0;         % control effort weight
+r3 = 5e+3;         % control effort weight
 Rxx = A(4,:)'*A(4,:) + diag([r1 0 r2 0]);
 Rxu = -A(4,:)';
 Ruu = 1 + r3;
 % LQR optimal gain
-[Kr,~] = lqr(A,B,Rxx,Ruu,Rxu);
+[par.Kr,~] = lqr(A,B,Rxx,Ruu,Rxu);
 Ac = (A - B  * Kr);
 Cc = (C - Du * Kr);
 
