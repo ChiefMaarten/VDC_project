@@ -51,14 +51,16 @@ C = [par.K_t 0 0 0;...                                   % tire force
 Dw = [-par.K_t; 0; 0];
 Du = [0; 0; -1];                                     % feedthrough matrix
 % Weights selection for use in performance index
-r1 = 5e10;      % comfort weight
+% r1 = 5e10;      % comfort weight: very stiff
+r1 = 1e9;      % comfort weight: very stiff
 r2 = 0;      % road holding weight
 r3 = 0;         % control effort weight
 Rxx = A(4,:)'*A(4,:) + diag([r1 0 r2 0]);
 Rxu = -A(4,:)';
 Ruu = 1 + r3;
 % LQR optimal gain
-[par.Kr,~] = lqr(A,B,Rxx,Ruu,Rxu);
+[Kr,~] = lqr(A,B,Rxx,Ruu,Rxu);
+par.Kr = Kr;
 Ac = (A - B  * Kr);
 Cc = (C - Du * Kr);
 
@@ -74,4 +76,17 @@ aero_grip_metric = rms(out.lower_downforce.Data);
 
 
 %% Plot interesting graphs
+figure
+plot(out.V.Time, out.V.Data)
+xlabel('Time [s]')
+ylabel('Velocity [m/s]')
 
+figure
+plot(out.RH.Time, out.RH.Data)
+xlabel('Time [s]')
+ylabel('Ride Height [m]')
+
+figure
+plot(out.u.Time, out.u.Data)
+xlabel('Time [s]')
+ylabel('Active suspension force [N]')
