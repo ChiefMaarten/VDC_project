@@ -1,5 +1,5 @@
 %% Parameter script
-par.use_LQR = 1;
+par.use_LQR = 1; 
 
 par.m_s = 207;
 par.m_u = 20;
@@ -19,8 +19,6 @@ par.wn_s = sqrt(par.K_s*par.K_t / (par.K_s + par.K_t)/par.m_s);              % s
 par.d_s = D * (2 * par.m_s * par.wn_s);                        % damping ratio
 
 % downforce
-par.initial_downforce = 1000;
-par.delay = 2; % delay in transient 
 par.rho =1.225;
 par.A = 1.5;
 par.Cl = 3.7;
@@ -51,8 +49,8 @@ C = [par.K_t 0 0 0;...                                   % tire force
 Dw = [-par.K_t; 0; 0];
 Du = [0; 0; -1];                                     % feedthrough matrix
 % Weights selection for use in performance index
-% r1 = 5e10;      % comfort weight: very stiff
-r1 = 1e9;      % comfort weight: very stiff
+r1 = 5e10;      % comfort weight: high  gain
+% r1 = 1e9;      % comfort weight: low gain
 r2 = 0;      % road holding weight
 r3 = 0;         % control effort weight
 Rxx = A(4,:)'*A(4,:) + diag([r1 0 r2 0]);
@@ -67,14 +65,16 @@ Cc = (C - Du * Kr);
 
 %%
 sim QCM_2020
-
+out = ans;
 %% Calculate metrics
 % Road holding (mechanical grip): rms of unsprung acc, rms of downforce
 comfort_metric = rms(out.ddZ_s.Data);
 mech_grip_metric = rms(out.ddZ_u.Data);
-aero_grip_metric = rms(out.lower_downforce.Data);
+aero_grip_metric = mean(out.lower_downforce.Data);
 
-
+disp(comfort_metric)
+disp(mech_grip_metric)
+disp(aero_grip_metric)
 %% Plot interesting graphs
 figure
 plot(out.V.Time, out.V.Data)
